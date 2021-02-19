@@ -18,7 +18,7 @@ const sendFn = jest.fn().mockImplementation(async (command) => {
 					tier: {
 						S: 'tier0',
 					},
-					isPaid: {
+					active: {
 						B: true,
 					},
 				},

@@ -6,7 +6,7 @@ export type DeviceResult = {
 	deviceId: string
 	tenantId: string
 	tier: string
-	isPaid: boolean
+	active: boolean
 }
 
 /**
