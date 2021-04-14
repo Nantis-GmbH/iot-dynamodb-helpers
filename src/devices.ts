@@ -26,14 +26,17 @@ export async function findActiveDevice(
 			TableName: tableName,
 			IndexName: 'deviceId-index',
 			KeyConditionExpression: 'deviceId = :deviceId',
-			FilterExpression: 'active = :isActive',
+			FilterExpression: '#active = :active',
 			ExpressionAttributeValues: {
 				':deviceId': {
 					S: deviceId,
 				},
-				':isActive': {
+				':active': {
 					BOOL: true,
 				},
+			},
+			ExpressionAttributeNames: {
+				'#active': 'active',
 			},
 		}),
 	)
