@@ -16,7 +16,7 @@ export type DeviceResult = {
  * @param tableName Name of the device table
  * @param deviceId The id of the device
  */
-export async function findDevice(
+export async function findActiveDevice(
 	client: DynamoDBClient,
 	tableName: string,
 	deviceId: string,
