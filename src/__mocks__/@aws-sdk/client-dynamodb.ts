@@ -15,11 +15,8 @@ const sendFn = jest.fn().mockImplementation(async (command) => {
 					deviceId: {
 						S: id,
 					},
-					tier: {
-						S: 'tier0',
-					},
-					active: {
-						B: true,
+					type: {
+						S: 'test',
 					},
 				},
 			],

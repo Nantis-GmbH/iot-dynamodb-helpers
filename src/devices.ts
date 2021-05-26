@@ -1,12 +1,10 @@
 import { DynamoDBClient, QueryCommand } from '@aws-sdk/client-dynamodb'
-
 import { unmarshall } from '@aws-sdk/util-dynamodb'
 
 export type DeviceResult = {
 	deviceId: string
 	tenantId: string
-	tier: string
-	active: boolean
+	type: string
 }
 
 /**
@@ -16,7 +14,7 @@ export type DeviceResult = {
  * @param tableName Name of the device table
  * @param deviceId The id of the device
  */
-export async function findActiveDevice(
+export async function findDevice(
 	client: DynamoDBClient,
 	tableName: string,
 	deviceId: string,
@@ -26,17 +24,10 @@ export async function findActiveDevice(
 			TableName: tableName,
 			IndexName: 'deviceId-index',
 			KeyConditionExpression: 'deviceId = :deviceId',
-			FilterExpression: '#active = :active',
 			ExpressionAttributeValues: {
 				':deviceId': {
 					S: deviceId,
 				},
-				':active': {
-					BOOL: true,
-				},
-			},
-			ExpressionAttributeNames: {
-				'#active': 'active',
 			},
 		}),
 	)
