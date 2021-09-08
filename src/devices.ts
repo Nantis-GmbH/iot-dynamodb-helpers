@@ -1,12 +1,6 @@
 import { DynamoDBClient, QueryCommand } from '@aws-sdk/client-dynamodb'
 import { unmarshall } from '@aws-sdk/util-dynamodb'
 
-export type DeviceResult = {
-	deviceId: string
-	tenantId: string
-	type: string
-}
-
 /**
  * Find the corresponding tenant for this device
  *
@@ -18,7 +12,7 @@ export async function findDevice(
 	client: DynamoDBClient,
 	tableName: string,
 	deviceId: string,
-): Promise<DeviceResult> {
+): Promise<{ [key: string]: any }> {
 	const data = await client.send(
 		new QueryCommand({
 			TableName: tableName,
@@ -33,7 +27,7 @@ export async function findDevice(
 	)
 
 	if (data?.Items && data.Items.length > 0) {
-		return <DeviceResult>unmarshall(data.Items[0])
+		return unmarshall(data.Items[0])
 	} else {
 		throw new Error('Item not found')
 	}
@@ -50,7 +44,7 @@ export async function findDevices(
 	client: DynamoDBClient,
 	tableName: string,
 	deviceId: string,
-): Promise<DeviceResult[]> {
+): Promise<{ [key: string]: any }[]> {
 	const data = await client.send(
 		new QueryCommand({
 			TableName: tableName,
@@ -66,7 +60,7 @@ export async function findDevices(
 
 	if (data?.Items && data.Items.length > 0) {
 		return data.Items.map((item) => {
-			return <DeviceResult>unmarshall(item)
+			return unmarshall(item)
 		})
 	} else {
 		throw new Error('Items not found')

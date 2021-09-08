@@ -1,11 +1,6 @@
 import { DynamoDBClient, QueryCommand } from '@aws-sdk/client-dynamodb'
 import { unmarshall } from '@aws-sdk/util-dynamodb'
 
-export type TenantResult = {
-	tenantId: string
-	tier: string
-}
-
 /**
  * Find the corresponding tenant
  *
@@ -17,7 +12,7 @@ export async function findTenant(
 	client: DynamoDBClient,
 	tableName: string,
 	tenantId: string,
-): Promise<TenantResult> {
+): Promise<{ [key: string]: any }> {
 	const data = await client.send(
 		new QueryCommand({
 			TableName: tableName,
@@ -31,7 +26,7 @@ export async function findTenant(
 	)
 
 	if (data?.Items && data.Items.length > 0) {
-		return <TenantResult>unmarshall(data.Items[0])
+		return unmarshall(data.Items[0])
 	} else {
 		throw new Error('Item not found')
 	}
